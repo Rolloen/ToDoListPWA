@@ -45,7 +45,7 @@ export default class AppTaskWriter extends LitElement {
         transition: color 0.3s ease, background-color 0.3s ease;
       }
       .card input[type="text"] {
-        width: 90%;
+        width: 80%;
         font-size: 1.8rem;
         outline: none;
         border: none;
@@ -78,15 +78,6 @@ export default class AppTaskWriter extends LitElement {
     `;
   }
 
-  // firstUpdated() {
-  //   this.shadowRoot.querySelector('img')
-  //     .addEventListener('load', () => {
-  //       this.shadowRoot.querySelector('.placeholder')
-  //         .classList.add('fade');
-  //     });
-  // }
-
-
   render() {
     return html `
       <article class="card">
@@ -103,9 +94,9 @@ export default class AppTaskWriter extends LitElement {
     
     saveTask({
       "title": taskTitle.value,
-      "isDone": false,
-      "order" : 0
-    })
+      "isDone": false
+    });
+    taskTitle.value = '';
   }
 
 }

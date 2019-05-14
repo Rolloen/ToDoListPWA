@@ -28,8 +28,10 @@ import checkConnectivity from "./utils/connexion.js";
 
   document.addEventListener('dataChanged', addNewCard);
 
+  document.addEventListener('taskFinished', reloadACard);
+
+
   async function init() {
-    console.log('INITING');
 
     try {
 
@@ -52,9 +54,9 @@ import checkConnectivity from "./utils/connexion.js";
         const cardElement = new AppCard();
 
         cardElement.initCard(
+          item.id,
           item.title,
           item.isDone,
-          item.order,
           cardElement);
         listPage.appendChild(cardElement);
         return cardElement;
@@ -67,19 +69,19 @@ import checkConnectivity from "./utils/connexion.js";
 
   async function addNewCard(data) {
     console.log('adding new card');
-    
+
     try {
       console.log(data.detail);
       let newTask = data.detail;
 
       fetchData();
 
-        const cardElement = new AppCard();
+      const cardElement = new AppCard();
 
       cardElement.initCard(
+        newTask.id,
         newTask.title,
         newTask.isDone,
-        newTask.order,
         cardElement);
       listPage.appendChild(cardElement);
 
@@ -88,9 +90,27 @@ import checkConnectivity from "./utils/connexion.js";
     }
   }
 
+  async function reloadACard(data) {
+    console.log('reloading a card');
+    try {
+       let taskId = data.detail;
+      console.log(taskId);
+      
+      let cardElem = document.querySelector(`[id="${taskId}"]`);
+      cardElem.setIsDone();
+
+      
+      // cardElem.requestUpdate();
+      
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
   async function fetchData() {
     try {
-      
+
       const data = await fetch('/data/todo.json');
       const json = await data.json();
       const jsonTasks = json.tasks;
@@ -107,6 +127,7 @@ import checkConnectivity from "./utils/connexion.js";
       return null;
     }
   }
+
 
   init();
 

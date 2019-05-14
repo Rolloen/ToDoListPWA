@@ -4,12 +4,15 @@ import {
   css
 } from 'lit-element';
 
+import {
+  finishTask
+} from '../../utils/task.js'
 export default class AppCard extends LitElement {
   constructor() {
     super();
+    this.id = 0;
     this.title = "";
     this.isDone = false;
-    this.order = 0;
   }
 
   static get properties() {
@@ -21,13 +24,10 @@ export default class AppCard extends LitElement {
       isDone: {
         type: Boolean,
         reflect: true
-      },
-      order: {
-        type: Number,
-        reflect: true
       }
     }
   }
+
 
   static get styles() {
     return css `
@@ -47,20 +47,7 @@ export default class AppCard extends LitElement {
         display: block;
         text-decoration: none;
       }
-      .card figure {
-        position: relative;
-        min-height: 30vh;
-        padding: 0;
-        margin: 0;
-        background-color: hsla(0, 0%, 15%, 0.64);
-      }
-      .card img {
-        display: block;
-        object-fit: cover;
-        width: 100%;
-        height: 100%;
-        max-height: 40vh;
-      }
+      
       .card .placeholder {
         background-repeat: no-repeat;
         background-size: cover;
@@ -74,35 +61,25 @@ export default class AppCard extends LitElement {
       .card main {
         padding: 1rem;
         background-color: var(--app-card-color);
-        transition: color 0.3s ease, background-color 0.3s ease;
       }
-      /**
-        * Persist animation using : animation-fill-mode set to forward 
-        * @see https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode
-        */
-      .fade {
-        -webkit-animation: fadeout 2s forwards; /* Safari and Chrome */
-        -moz-animation: fadeout 2s forwards; /* Firefox */
-        -ms-animation: fadeout 2s forwards; /* Internet Explorer */
-        -o-animation: fadeout 2s forwards; /* Opera */
-        animation: fadeout 2s forwards;
+
+      .card h1{
+        width : 80%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
       }
-      /* Key frame animation */
-      @keyframes fadeout {
-        from { opacity: 1; }
-        to   { opacity: 0; }
+
+      .card h1:hover {
+        color: grey;
       }
-      /* Firefox */
-      @-moz-keyframes fadeout {
-        from { opacity: 1; }
-        to   { opacity: 0; }
+      .card del {
+        color: grey;
       }
-      /* Safari and Chrome */
-      @-webkit-keyframes fadeout {
-        from { opacity: 1; }
-        to   { opacity: 0; }
-      }
+
       @media (min-width: 600px) {
+
       }
       /* Wide layout: when the viewport width is bigger than 460px, layout
       changes to a wide layout. */
@@ -120,28 +97,35 @@ export default class AppCard extends LitElement {
     `;
   }
 
-  // firstUpdated() {
-  //   this.shadowRoot.querySelector('img')
-  //     .addEventListener('load', () => {
-  //       this.shadowRoot.querySelector('.placeholder')
-  //         .classList.add('fade');
-  //     });
-  // }
-
-  initCard(title, isDone, order) {
+  initCard(id, title, isDone) {
+    this.id = id;
     this.title = title;
     this.isDone = isDone;
-    this.order = order;
+  }
+  
+  setIsDone() {
+    this.isDone = !this.isDone;
   }
 
   render() {
     return html `
       <article class="card">
         <main>
-          <h1>${this.title}</h1>
+          ${this.isDone
+              ? html`<h1 title="${this.title}"  @click="${this.finishTask}"><del>${this.title}</del></h1>`
+              : html`<h1 title="${this.title}"  @click="${this.finishTask}">${this.title}</h1>`
+          }
         </main>
       </article>
     `;
+  }
+
+  finishTask() {
+    finishTask( {
+      'id': this.id,
+      'title' : this.title,
+      'isDone': !this.isDone
+    })
   }
 }
 
