@@ -58,7 +58,6 @@ function checkLatency(timeToCount, offlineTimeout, cb) {
 }
 
 function handleLatency(avg, threshold) {
-    console.log(avg);
     const isConnectedFast = avg <= threshold;
     if (!isConnectedFast) return changeConnectivity(false);
     changeConnectivity(true);
@@ -70,7 +69,7 @@ function reset() {
 }
 
 function changeConnectivity(state) {
-    const event = new CustomEvent('connection-changed', {
+    const event = new CustomEvent('connexionChanged', {
         detail: state
     });
 

@@ -23,7 +23,9 @@ import checkConnectivity from "./utils/connexion.js";
   document.addEventListener('connexionChanged', ({
     detail
   }) => {
-    console.log(detail);
+    if (detail) {
+      fetchData();
+    }
   });
 
   document.addEventListener('dataChanged', addNewCard);
@@ -93,15 +95,15 @@ import checkConnectivity from "./utils/connexion.js";
   async function reloadACard(data) {
     console.log('reloading a card');
     try {
-       let taskId = data.detail;
+      let taskId = data.detail;
       console.log(taskId);
-      
+
       let cardElem = document.querySelector(`[id="${taskId}"]`);
       cardElem.setIsDone();
 
-      
+
       // cardElem.requestUpdate();
-      
+
     } catch (error) {
       console.error(error);
       return null;

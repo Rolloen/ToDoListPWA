@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- <meta name="theme-color" content="#FFFFFF" /> -->
+  <meta name="theme-color" content="#FFFFFF" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>My first PWA</title>
+  <meta name="description" content="Best TODO List of the world" />
+  <title>ToDoList</title>
   <link rel="manifest" href="manifest.json">
   <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
     integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous"> -->
@@ -101,9 +102,9 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
-        // navigator.serviceWorker.register('/service-worker.js', {
-        //   scope : '/'
-        // });
+        navigator.serviceWorker.register('/service-worker.js', {
+          scope : '/'
+        });
       });
     } else {
       console.log('Use another cache method');
